@@ -40,8 +40,8 @@ var FirstAndPikeStore = {
   locationCloseHour: 20,
   minHourlyCustomers: 23,
   maxHourlyCustomers: 65,
-  avgCookiesPerCustomer: 6.3,  
-  hourlyCustomerCookies:[],  
+  avgCookiesPerCustomer: 6.3,
+  hourlyCustomerCookies:[],
   calcCookies:function(){
     this.hourlyCustomerCookies = calcCookieCount(this.locationOpenHour, this.locationCloseHour, this.minHourlyCustomers, this.maxHourlyCustomers, this.avgCookiesPerCustomer);
   },
@@ -49,8 +49,8 @@ var FirstAndPikeStore = {
 };
 
 FirstAndPikeStore.calcCookies();
-console.log('Average Cookies Per Customer =', FirstAndPikeStore.avgCookiesPerCustomer);
-console.log('hourlyCustomerCookies Array =', FirstAndPikeStore.hourlyCustomerCookies);
+console.log('FirstAndPikeStore Average Cookies Per Customer =', FirstAndPikeStore.avgCookiesPerCustomer);
+console.log('FirstAndPikeStore hourlyCustomerCookies Array =', FirstAndPikeStore.hourlyCustomerCookies);
 
 /* Populate data in sales.html */
 displaySalesProjections(ulID, FirstAndPikeStore.hourlyCustomerCookies);
