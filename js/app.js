@@ -39,7 +39,7 @@ function displaySalesProjections(ulID, objCookieData){
 
 /* 1st and Pike Place Store */
 var ulID = 'FirstAndPike';
-var FirstAndPikeStore = {
+var firstAndPikeStore = {
   locationName: '1st and Pike',
   locationOpenHour: 6,
   locationCloseHour: 20,
@@ -57,19 +57,19 @@ var FirstAndPikeStore = {
   totalCookies: 0
 };
 
-FirstAndPikeStore.calcCookies();
-console.log('FirstAndPikeStore Average Cookies Per Customer =', FirstAndPikeStore.avgCookiesPerCustomer);
-console.log('FirstAndPikeStore hourlyCustomerCookies Array =', FirstAndPikeStore.hourlyCustomerCookies);
-console.log('FirstAndPikeStore Total Cookies =', FirstAndPikeStore.totalCookies);
+firstAndPikeStore.calcCookies();
+console.log('FirstAndPikeStore Average Cookies Per Customer =', firstAndPikeStore.avgCookiesPerCustomer);
+console.log('FirstAndPikeStore hourlyCustomerCookies Array =', firstAndPikeStore.hourlyCustomerCookies);
+console.log('FirstAndPikeStore Total Cookies =', firstAndPikeStore.totalCookies);
 
 // Populate data in sales.html
-displaySalesProjections(ulID, FirstAndPikeStore);
+displaySalesProjections(ulID, firstAndPikeStore);
 
 
 
 /* SeaTac Airport */
 ulID = 'SeaTacAirport';
-var SeaTacAirport = {
+var seaTacAirport = {
   locationName: 'SeaTac Airport',
   locationOpenHour: 6,
   locationCloseHour: 20,
@@ -87,10 +87,38 @@ var SeaTacAirport = {
   totalCookies: 0
 };
 
-SeaTacAirport.calcCookies();
-console.log('SeaTacAirport Average Cookies Per Customer =', SeaTacAirport.avgCookiesPerCustomer);
-console.log('SeaTacAirport hourlyCustomerCookies Array =', SeaTacAirport.hourlyCustomerCookies);
+seaTacAirport.calcCookies();
+console.log('SeaTacAirport Average Cookies Per Customer =', seaTacAirport.avgCookiesPerCustomer);
+console.log('SeaTacAirport hourlyCustomerCookies Array =', seaTacAirport.hourlyCustomerCookies);
 
 // Populate data in sales.html
-displaySalesProjections(ulID, SeaTacAirport);
+displaySalesProjections(ulID, seaTacAirport);
 
+
+
+/* Seattle Center */
+ulID = 'SeattleCenter';
+var seattleCenter = {
+  locationName: 'Seattle Center',
+  locationOpenHour: 6,
+  locationCloseHour: 20,
+  minHourlyCustomers: 11,
+  maxHourlyCustomers: 38,
+  avgCookiesPerCustomer: 3.7,
+  hourlyCustomerCookies:[],
+  calcCookies:function(){
+    this.hourlyCustomerCookies = calcCookieCount(this.locationOpenHour, this.locationCloseHour, this.minHourlyCustomers, this.maxHourlyCustomers, this.avgCookiesPerCustomer);
+
+    for (var i = 0; i < this.hourlyCustomerCookies.length; i++){
+      this.totalCookies += this.hourlyCustomerCookies[i].cookieCount;
+    }
+  },
+  totalCookies: 0
+};
+
+seattleCenter.calcCookies();
+console.log('seattleCenter Average Cookies Per Customer =', seattleCenter.avgCookiesPerCustomer);
+console.log('seattleCenter hourlyCustomerCookies Array =', seattleCenter.hourlyCustomerCookies);
+
+// Populate data in sales.html
+displaySalesProjections(ulID, seattleCenter);
