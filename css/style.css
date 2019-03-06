@@ -1,9 +1,18 @@
+body {
+    background-color: lightcyan;
+    font-family: Calibri, Arial;
+}
+
 h1 {
     text-align: center;
-    font-family: Calibri,sans-serif;
+    font-family: Calibri,Arial;
 }
 
 ul li {
     margin-left: 30px;
     position: relative;
+}
+
+#imgSalmon {    
+    margin-left: 250px;
 }
