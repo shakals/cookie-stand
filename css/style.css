@@ -14,5 +14,8 @@ ul li {
 }
 
 #imgSalmon {    
-    margin-left: 250px;
+    display: block;
+    margin: 0px auto;
+    width: 600px;
+    height: 250px;
 }
