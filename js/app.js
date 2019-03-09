@@ -3,11 +3,11 @@
 var locationOpenHour = 6, locationCloseHour = 20;
 
 /* Constructor function for all stores */
-function CookieStore(locationName, minHourlyCustomers, maxHourlyCustomers, avgCookiesPerCustomer){
-  this.locationName = locationName;
-  this.minHourlyCustomers = minHourlyCustomers;
-  this.maxHourlyCustomers = maxHourlyCustomers;
-  this.avgCookiesPerCustomer = avgCookiesPerCustomer;
+function CookieStore(store){
+  this.locationName = store.locationName;
+  this.minHourlyCustomers = store.minHourlyCustomers;
+  this.maxHourlyCustomers = store.maxHourlyCustomers;
+  this.avgCookiesPerCustomer = store.avgCookiesPerCustomer;
   this.hourlyCustomerCookies = [];
   this.totalCookies = 0;
 }
@@ -27,9 +27,15 @@ CookieStore.prototype.calcCookieCount = function(){
       customerCount: tempCustCount, // Random customer count generated above
       cookieCount: Math.ceil(tempCustCount * this.avgCookiesPerCustomer) // Cookie count is calculated by multiplying Customer Count with Average cookies sold per customer and then rounding upwards to nearest integer
     };
+    // Keep a running total of total cookies sold in the store
     this.totalCookies += arr[arrIndex].cookieCount;
+
+    // Keep populating this array to display column totals in the table. The 'isNaN()' function is used to avoid 'NaN' error for the very first iteration
+    hourlyTotalArray[arrIndex] = (isNaN(hourlyTotalArray[arrIndex]) ? 0:hourlyTotalArray[arrIndex]) + arr[arrIndex].cookieCount;
     arrIndex++;
   }
+  // Calculate the grand total
+  hourlyTotalArray[arrIndex] = (isNaN(hourlyTotalArray[arrIndex]) ? 0:hourlyTotalArray[arrIndex]) + this.totalCookies;
   return arr;
 };
 
@@ -43,7 +49,7 @@ CookieStore.prototype.displayCookieSales = function(){
   for (var i = 0; i < this.hourlyCustomerCookies.length; i++) {
     tableRowData += '<td>' + this.hourlyCustomerCookies[i].cookieCount + '</td>';
   }
-  tableRowData += '<td>' + this.totalCookies + '</td>';
+  tableRowData += '<td class=\'totalCell\'>' + this.totalCookies + '</td>';
   console.log('tableRowData =', tableRowData);
   tableRow = document.createElement('tr');
   tableRow.innerHTML = tableRowData; //Populate hourly cookie data
@@ -60,6 +66,7 @@ function displayHeader(){
   // This statement leaves a blank cell in the header that vertically aligns with store names
   tableHeaderData += '<td>' + '' + '</td>';
 
+  // Display all hours
   for (var i = locationOpenHour + 1; i <= locationCloseHour; i++) {
     var hour = ((i <= 12) ? i:i%12) + ((i < 12) ? ' AM':' PM');
     tableHeaderData += '<td>' + hour + '</td>';
@@ -73,30 +80,69 @@ function displayHeader(){
 }
 
 
+/* This function is used to display the hourly cookie sales totals across all stores */
+function displayHourlyTotals(){
+  var tableBody = document.getElementById('tablebody');
+  var tableRow, tableRowData = '';
+
+  tableRowData += '<td class=\'totalCell\'>Totals</td>';
+  for (var i = 0; i < hourlyTotalArray.length; i++) {
+    tableRowData += '<td class=\'totalCell\'>' + hourlyTotalArray[i] + '</td>';
+  }
+
+  console.log('tableRowData =', tableRowData);
+  tableRow = document.createElement('tr');
+  tableRow.innerHTML = tableRowData;
+  tableBody.appendChild(tableRow);
+  console.log('tableBody =', tableBody);
+}
+
+// Create an array of objects to store details about each location
+var storeList = [
+  {
+    locationName: '1st and Pike',
+    minHourlyCustomers: 23,
+    maxHourlyCustomers: 65,
+    avgCookiesPerCustomer: 6.3
+  },
+  {
+    locationName: 'SeaTac Airport',
+    minHourlyCustomers: 3,
+    maxHourlyCustomers: 24,
+    avgCookiesPerCustomer: 1.2
+  },
+  {
+    locationName: 'Seattle Center',
+    minHourlyCustomers: 11,
+    maxHourlyCustomers: 38,
+    avgCookiesPerCustomer: 3.7
+  },
+  {
+    locationName: 'Capitol Hill',
+    minHourlyCustomers: 20,
+    maxHourlyCustomers: 38,
+    avgCookiesPerCustomer: 2.3
+  },
+  {
+    locationName: 'Alki',
+    minHourlyCustomers: 2,
+    maxHourlyCustomers: 16,
+    avgCookiesPerCustomer: 4.6
+  }];
+
+var hourlyTotalArray = [0];
+
 // Call the respective function to display the header row in the table that shows every hour
 displayHeader();
 
-// Calculate and display cookie sales data for 1st and Pike Place store
-var firstAndPikeStore = new CookieStore('1st and Pike', 23, 65, 6.3);
-firstAndPikeStore.hourlyCustomerCookies = firstAndPikeStore.calcCookieCount();
-firstAndPikeStore.displayCookieSales();
 
-// Calculate and display cookie sales data for the store at SeaTac Airport
-var seaTacAirport = new CookieStore('SeaTac Airport', 3, 24, 1.2);
-seaTacAirport.hourlyCustomerCookies = seaTacAirport.calcCookieCount();
-seaTacAirport.displayCookieSales();
+// Loop through the store list, calculate and display cookie count in sales.html
+for (var i=0; i<storeList.length; i++){
+  var store = new CookieStore(storeList[i]);
+  store.hourlyCustomerCookies = store.calcCookieCount();
+  store.displayCookieSales();
+  //hourlyTotalArray.push(store.hourlyCustomerCookies);
+}
 
-// Calculate and display cookie sales data for the store at Seattle Center
-var seattleCenter = new CookieStore('Seattle Center', 11, 38, 3.7);
-seattleCenter.hourlyCustomerCookies = seattleCenter.calcCookieCount();
-seattleCenter.displayCookieSales();
-
-// Calculate and display cookie sales data for the store at Capitol Hill
-var capitolHill = new CookieStore('Capitol Hill', 20, 38, 2.3);
-capitolHill.hourlyCustomerCookies = capitolHill.calcCookieCount();
-capitolHill.displayCookieSales();
-
-// Calculate and display cookie sales data for the store at Alki
-var alki = new CookieStore('Alki', 2, 16, 4.6);
-alki.hourlyCustomerCookies = alki.calcCookieCount();
-alki.displayCookieSales();
+// Display hourly cookie sales totals across all stores
+displayHourlyTotals();
