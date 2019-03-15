@@ -5,6 +5,20 @@
 </head>
 <body>
     <h1>Sales Projections</h1>
+    <form id="location_input_form">
+        <fieldset>
+            <label for="locationName">Store Location:</label>
+            <input type="text" name="locationName" placeholder="Enter location of store" minlength="1" required> 
+            <label for="minHourlyCustomers">Minimum number of customers per hour:</label>
+            <input type="number" name="minHourlyCustomers" placeholder="Enter minimum customer count" minlength="1" required>
+            <label for="maxHourlyCustomers">Maximum number of customers per hour:</label>
+            <input type="number" name="maxHourlyCustomers" placeholder="Enter maximum customer count" minlength="1" required>
+            <label for="avgCookiesPerCustomer">Average number of cookies sold per customer:</label>
+            <input type="number" name="avgCookiesPerCustomer" placeholder="Enter average cookie sale:" minlength="1" required>
+            <button id="submit_button" type="submit">Add Location to the List</button>
+        </fieldset>
+
+    </form>
     <table>
         <thead id='tableheader'></thead>
         <tbody id='tablebody'></tbody>
